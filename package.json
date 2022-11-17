@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "description": "Node implementation of Reminders",
   "license": "MIT",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "mongo-in-memory": "0.0.5",
+    "nodemon": "^2.0.20",
     "proxyquire": "^1.7.10"
   }
 }
