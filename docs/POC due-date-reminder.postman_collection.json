@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "717a079b-28a3-4c6e-b3e3-a0756ea1f60b",
+		"name": "POC due-date-reminder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6582432"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/reminder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Bater ponto\",\n    \"userEmail\": \"victor14santos7@gmail.com\",\n    \"warningTime\": \"600\",\n    \"timeZone\": \"America/Sao_Paulo\",\n    \"time\": \"11-17-2022 17:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/reminder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reminder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/reminder",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/reminder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reminder"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

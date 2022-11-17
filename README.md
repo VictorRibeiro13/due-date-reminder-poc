@@ -9,3 +9,6 @@
 
 ## Rodando
     > npm start
+
+
+Obs. Há uma collection do insomnia na pasta docs para testes
