@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const moment = require('moment');
+const { sendEmail } = require('../services/sendEmail');
 
 const ReminderSchema = new mongoose.Schema({
   name: String,
@@ -14,26 +15,37 @@ const ReminderSchema = new mongoose.Schema({
 ReminderSchema.methods.requiresNotification = function (date) {
   return Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
     .diff(moment(date).utc())
-  ).asMinutes()) === this.warningTime;
+  ).asMinutes()) <= this.warningTime;
 };
 
 ReminderSchema.statics.sendNotifications = function () {
-  const searchDate = new Date();
+  const today = moment().startOf('day');
+
   Reminder
-    .find() // aplicar filtro aqui ao inves de cagada abaixo
+    .find({
+      time: {
+        $gte: today.toDate(),
+        $lte: moment(today).endOf('day').toDate()
+      }
+    })
     .then(function (reminders) {
       reminders = reminders.filter(function (Reminder) {
-        return Reminder.requiresNotification(searchDate);
+        return Reminder.requiresNotification(new Date());
       });
-      if (reminders.length > 0) {
+
+      if (reminders.length > 0)
         sendNotifications(reminders);
-      }
     });
 
-  function sendNotifications(reminders) {
-    // Implementar envio por email e function com signalR
+  async function sendNotifications(reminders) {
     for (const reminder of reminders) {
-      // To-do
+      try {
+        await sendEmail(reminder.userEmail)
+      } catch (err) {
+        console.error("Error email", err)
+      }
+
+      await Reminder.deleteOne({ _id: reminder._id })
     }
   }
 };

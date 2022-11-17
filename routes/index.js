@@ -14,8 +14,7 @@ routes.use(function (req, res, next) {
 // production error handler
 // no stacktraces leaked to user
 routes.use(function (err, req, res, next) {
-    console.log("Deu erro rapazeada")
-    console.error(err);
+    console.error("Error ", err);
     res.status(err.status || 500);
     return res;
 });
