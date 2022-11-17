@@ -7,90 +7,36 @@ const reminder = require('../../models/reminder');
 const router = new express.Router();
 
 
-const getTimeZones = function() {
-  return momentTimeZone.tz.names();
-};
-
 // GET: /reminders
-router.get('/', function(req, res, next) {
-  reminder.find()
-    .then(function(reminders) {
-      res.render('reminders/index', {reminders: reminders});
-    });
+router.get('/', function (req, res, next) {
+  console.log("reminder", reminder.baseModelName)
+
+  // return res.json({
+  //   status: 200,
+  //   reminders: 
+  // })
 });
 
-// GET: /reminders/create
-router.get('/create', function(req, res, next) {
-  res.render('reminders/create', {
-    timeZones: getTimeZones(),
-    reminder: new reminder({name: '',
-                                  phoneNumber: '',
-                                  notification: '',
-                                  timeZone: '',
-                                  time: ''})});
-});
 
 // POST: /reminders
-router.post('/', function(req, res, next) {
+router.post('/', function (req, res, next) {
   const name = req.body.name;
-  const phoneNumber = req.body.phoneNumber;
+  const userEmail = req.body.phoneNumber;
   const notification = req.body.notification;
   const timeZone = req.body.timeZone;
   const time = moment(req.body.time, 'MM-DD-YYYY hh:mma');
 
-  const reminder = new reminder({name: name,
-                                       phoneNumber: phoneNumber,
-                                       notification: notification,
-                                       timeZone: timeZone,
-                                       time: time});
-  reminder.save()
-    .then(function() {
-      res.redirect('/');
-    });
+  const reminder = new reminder({
+    name: name,
+    userEmail: userEmail,
+    notification: notification,
+    timeZone: timeZone,
+    time: time
+  });
+  reminder.save();
+
+  return res.json({ status: 200, reminder })
 });
 
-// GET: /reminders/:id/edit
-router.get('/:id/edit', function(req, res, next) {
-  const id = req.params.id;
-  reminder.findOne({_id: id})
-    .then(function(reminder) {
-      res.render('reminders/edit', {timeZones: getTimeZones(),
-                                       reminder: reminder});
-    });
-});
-
-// POST: /reminders/:id/edit
-router.post('/:id/edit', function(req, res, next) {
-  const id = req.params.id;
-  const name = req.body.name;
-  const phoneNumber = req.body.phoneNumber;
-  const notification = req.body.notification;
-  const timeZone = req.body.timeZone;
-  const time = moment(req.body.time, 'MM-DD-YYYY hh:mma');
-
-  reminder.findOne({_id: id})
-    .then(function(reminder) {
-      reminder.name = name;
-      reminder.phoneNumber = phoneNumber;
-      reminder.notification = notification;
-      reminder.timeZone = timeZone;
-      reminder.time = time;
-
-      reminder.save()
-        .then(function() {
-          res.redirect('/');
-        });
-    });
-});
-
-// POST: /reminders/:id/delete
-router.post('/:id/delete', function(req, res, next) {
-  const id = req.params.id;
-
-  reminder.remove({_id: id})
-    .then(function() {
-      res.redirect('/');
-    });
-});
 
 module.exports = router;

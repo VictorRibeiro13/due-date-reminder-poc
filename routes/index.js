@@ -3,7 +3,6 @@ const routes = express.Router();
 const reminder = require('./reminders/reminders')
 
 routes.use('/reminder', reminder);
-routes.use('/', reminder);
 
 // catch 404 and forward to error handler
 routes.use(function (req, res, next) {
@@ -17,10 +16,7 @@ routes.use(function (req, res, next) {
 routes.use(function (err, req, res, next) {
     console.error(err);
     res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {},
-    });
+    return res.json({ errorStatus: err.status, error: err })
 });
 
 
