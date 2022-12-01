@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  database-mongodb:
+    image: mongo
+    ports:
+      - :27017
+    volumes:
+      - mongodb:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=usp
+      - MONGO_USERNAME=admin
+      - MONGO_PASSWORD=usp
+  node:
+    restart: always
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/code
+    environment:
+      - MONGOMS_ARCH=x64
+      - MONGO_URL=mongodb://admin:usp@database-mongodb:27017/admin?authSource=admin
+      - NODE_ENV=production
+      - APP_EMAIL=problemasresolucao2@gmail.com
+      - APP_EMAIL_PASS=figwkmghxjorjuad
+    depends_on:
+      - database-mongodb
+volumes:
+ mongodb:

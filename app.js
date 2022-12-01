@@ -21,12 +21,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
 
-app.use(routes);
 
 mongoose.connect(cfg.mongoUrl, {
     useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
+app.use(routes);
 scheduler.start();
 
 module.exports = app;
